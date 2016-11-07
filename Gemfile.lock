@@ -1,7 +1,7 @@
 GEM
   remote: https://rubygems.org/
   specs:
-    daemons (1.2.3)
+    daemons (1.2.4)
     eventmachine (1.2.0.1)
     faye-websocket (0.10.4)
       eventmachine (>= 0.12.0)
@@ -23,4 +23,4 @@ DEPENDENCIES
   thin
 
 BUNDLED WITH
-   1.12.5
+   1.13.6

@@ -2,6 +2,7 @@ class WebSocketHandler
 
   def initialize
     Faye::WebSocket.load_adapter('thin')
+    @clients = []
   end
 
   def call(env)
@@ -10,12 +11,13 @@ class WebSocketHandler
 
       ws = Faye::WebSocket.new(env)
 
-      ws.on :message do |event|
-        ws.send(event.data)
-      end
-
       ws.on :open do |event|
         puts "websocket opened"
+        @clients.push ws
+      end
+
+      ws.on :message do |event|
+        @clients.each { |c| c.send(event.data) if c }
       end
 
       ws.on :close do |event|

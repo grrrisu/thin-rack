@@ -2,8 +2,25 @@
   <body>
     <h1>Hello</h1>
 
+    <button onclick="window.open('/')">open new test client</button>
+    - (try in a different browser)
+
+    <hr />
+
+    <form id="message_form">
+      <input id="message-input" type="text" />
+      <button>say to all clients</button>
+    </form>
+
+    <hr />
+
+    <pre id="messages"></pre>
+
     <script type="text/javascript">
-      var connection = new WebSocket('ws://localhost:4567/websocket');
+      var connection = new WebSocket('ws://localhost:4567/websocket'),
+          m_node     = document.getElementById('messages'),
+          say_node   = document.getElementById('message-input'),
+          say_to_all;
 
       connection.onopen = function () {
         console.log("opened");
@@ -17,9 +34,20 @@
 
       connection.onmessage = function (e) {
         console.log("message", e);
+        m_node.innerHTML += String(new Date) + ': ' + e.data + "\n";
         //console.log('Server: ' + e.data);
       };
-      
+
+      say_to_all = function() {
+        connection.send(say_node.value);
+        say_node.value = '';
+        say_node.focus();
+      }
+
+      document.getElementById('message_form').onsubmit = function() {
+        say_to_all();
+        return false;
+      }
     </script>
 
   </body>
